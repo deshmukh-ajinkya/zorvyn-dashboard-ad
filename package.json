@@ -2,9 +2,12 @@
   "name": "expense-tracker",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://deshmukh-ajinkya.github.io/expense-tracker",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next export",
+    "deploy": "next build && next export && gh-pages -d out",
     "start": "next start"
   },
   "dependencies": {
@@ -19,6 +22,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "gh-pages": "^6.1.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
