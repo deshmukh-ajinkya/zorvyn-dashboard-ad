@@ -206,7 +206,7 @@ export default function TransactionTable() {
       )}
 
       {/* FILTERS */}
-      <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+      <div id="filter-section" className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="grid gap-3 md:grid-cols-3">
           <input
             placeholder="Search By Description..."
@@ -292,6 +292,9 @@ export default function TransactionTable() {
                           setForm(t);
                           setEditingId(t.id);
                           setShowForm(true);
+                          document
+                            .getElementById("filter-section")
+                            ?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }}
                         className="text-blue-500 text-xs hover:underline"
                       >
