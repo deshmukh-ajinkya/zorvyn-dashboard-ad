@@ -101,6 +101,20 @@ export default function TransactionTable() {
     currentPage * itemsPerPage
   );
 
+  const handleCancel = () => {
+    setShowForm(false);
+    setEditingId(null);
+
+    setForm({
+      id: Date.now(),
+      date: "",
+      description: "",
+      category: "Food",
+      amount: 0,
+      type: "expense",
+    });
+  };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, searchInput]);
@@ -129,6 +143,7 @@ export default function TransactionTable() {
             onClick={() => {
               setShowForm(!showForm);
               setEditingId(null);
+              // handleCancel();
             }}
             className="text-xs px-3 py-1 rounded-md bg-[#23a997] hover:opacity-90 text-white"
           >
@@ -138,72 +153,81 @@ export default function TransactionTable() {
       </div>
 
       {/* FORM */}
-      {showForm && (
+      <div
+        className={`transition-all duration-300 overflow-hidden ${showForm ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"}`}
+      >
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm p-4 flex flex-col gap-3">
-
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              type="date"
-              value={form.date}
-              onChange={(e) =>
-                setForm({ ...form, date: e.target.value })
-              }
-              className={inputStyle}
-            />
-
-            <input
-              type="number"
-              value={form.amount}
-              placeholder="Amount"
-              onChange={(e) =>
-                setForm({ ...form, amount: Number(e.target.value) })
-              }
-              className={inputStyle}
-            />
-          </div>
-
           <input
-            value={form.description}
-            placeholder="Description"
+            type="date"
+            value={form.date}
             onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
+              setForm({ ...form, date: e.target.value })
             }
             className={inputStyle}
           />
 
-          <div className="grid grid-cols-2 gap-3">
-            <select
-              value={form.category}
-              onChange={(e) =>
-                setForm({ ...form, category: e.target.value })
-              }
-              className={inputStyle}
-            >
-              {categories.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
+          <input
+            type="number"
+            value={form.amount}
+            placeholder="Amount"
+            onChange={(e) =>
+              setForm({ ...form, amount: Number(e.target.value) })
+            }
+            className={inputStyle}
+          />
+        </div>
 
-            <select
-              value={form.type}
-              onChange={(e) =>
-                setForm({ ...form, type: e.target.value as any })
-              }
-              className={inputStyle}
-            >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
-          </div>
+        <input
+          value={form.description}
+          placeholder="Description"
+          onChange={(e) =>
+            setForm({ ...form, description: e.target.value })
+          }
+          className={inputStyle}
+        />
 
+        <div className="grid grid-cols-2 gap-3">
+          <select
+            value={form.category}
+            onChange={(e) =>
+              setForm({ ...form, category: e.target.value })
+            }
+            className={inputStyle}
+          >
+            {categories.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+
+          <select
+            value={form.type}
+            onChange={(e) =>
+              setForm({ ...form, type: e.target.value as any })
+            }
+            className={inputStyle}
+          >
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+        </div>
+
+        <div className="flex gap-2 mt-2">
           <button
             onClick={handleSave}
-            className="bg-[#23a997] hover:opacity-90 text-white py-2 rounded-md text-xs mt-2"
+            className="flex-1 bg-[#23a997] hover:opacity-90 text-white py-2 rounded-md text-xs"
           >
             {editingId ? "Update Transaction" : "Save Transaction"}
           </button>
+
+          <button
+            onClick={handleCancel}
+            className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 rounded-md text-xs hover:opacity-90"
+          >
+            Cancel
+          </button>
         </div>
-      )}
+      </div>
+    
 
       {/* FILTERS */}
       <div id="filter-section" className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -270,7 +294,7 @@ export default function TransactionTable() {
               <th className="px-3 text-left">Description</th>
               <th className="px-3 text-left">Category</th>
               <th className="px-3 text-right">Amount</th>
-              {isAdmin && <th className="px-3 text-right">Edit</th>}
+              {isAdmin && <th className="px-3 text-right">Action</th>}
             </tr>
           </thead>
 
